@@ -1,0 +1,221 @@
+@{
+    ViewData["Title"] = "Test API İşlemleri";
+}
+
+<div class="container-fluid px-4">
+    <h2 class="mb-4">🧩 Test API İşlemleri - Cari Yönetimi</h2>
+
+    <div class="row g-4">
+        <!-- ✅ Yeni Cari -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-success text-white">
+                    <i class="bi bi-person-plus-fill"></i> Yeni Cari Oluştur
+                </div>
+                <div class="card-body">
+                    <form id="createCariForm" asp-controller="TestApi" asp-action="CreateCari" method="post">
+                        <div class="mb-2">
+                            <input name="cariKodu" class="form-control" placeholder="Cari Kodu" required />
+                        </div>
+                        <div class="mb-2">
+                            <input name="cariIsim" class="form-control" placeholder="Cari İsmi" required />
+                        </div>
+                        <div class="mb-2">
+                            <input name="cariTel" class="form-control" placeholder="Telefon" />
+                        </div>
+                        <div class="mb-2">
+                            <input name="cariIl" class="form-control" placeholder="İl" />
+                        </div>
+                        <div class="mb-3">
+                            <input name="email" type="email" class="form-control" placeholder="E-posta" />
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-plus-circle"></i> Oluştur
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✏️ Güncelle -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-warning text-dark">
+                    <i class="bi bi-pencil-square"></i> Cari Güncelle
+                </div>
+                <div class="card-body">
+                    <form id="updateCariForm" asp-controller="TestApi" asp-action="UpdateCari" method="post">
+                        <div class="mb-2">
+                            <input id="updateKod" name="cariKodu" class="form-control" placeholder="Cari Kodu" required />
+                        </div>
+                        <div class="mb-2">
+                            <input id="updateIsim" name="cariIsim" class="form-control" placeholder="Yeni Cari İsmi" />
+                        </div>
+                        <div class="mb-2">
+                            <input id="updateTel" name="cariTel" class="form-control" placeholder="Telefon" />
+                        </div>
+                        <div class="mb-2">
+                            <input id="updateIl" name="cariIl" class="form-control" placeholder="İl" />
+                        </div>
+                        <div class="mb-3">
+                            <input id="updateMail" name="email" type="email" class="form-control" placeholder="Email" />
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100">
+                            <i class="bi bi-arrow-clockwise"></i> Güncelle
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🗑️ Sil -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-danger text-white">
+                    <i class="bi bi-trash3-fill"></i> Cari Sil
+                </div>
+                <div class="card-body">
+                    <form id="deleteCariForm" asp-controller="TestApi" asp-action="DeleteCari" method="post">
+                        <div class="mb-3">
+                            <input id="deleteKod" name="cariKodu" class="form-control" placeholder="Cari Kodu" required />
+                        </div>
+                        <div class="alert alert-warning small">
+                            <i class="bi bi-exclamation-triangle"></i> 
+                            Bu işlem geri alınamaz!
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Silmek istediğinizden emin misiniz?')">
+                            <i class="bi bi-trash"></i> Sil
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📋 Cari Listesi -->
+    <div class="card mt-4 border-0 shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-list-ul"></i> Cari Listesi</span>
+            <button class="btn btn-sm btn-light" onclick="loadCariler()">
+                <i class="bi bi-arrow-clockwise"></i> Yenile
+            </button>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="cariTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Cari Kod</th>
+                            <th>Cari İsim</th>
+                            <th>Telefon</th>
+                            <th>İl</th>
+                            <th width="100">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="5" class="text-center py-3">Yükleniyor...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔔 Durum -->
+    @if (ViewBag.Hata != null)
+    {
+        <div class="alert alert-danger mt-3 shadow-sm">
+            <i class="bi bi-x-circle"></i> <b>Hata:</b> @ViewBag.Hata
+        </div>
+    }
+    else if (ViewBag.Result != null)
+    {
+        <div class="alert alert-success mt-3 shadow-sm">
+            <i class="bi bi-check-circle"></i> <b>Başarılı:</b>
+            <pre class="bg-light p-3 rounded mt-2 small" style="white-space: pre-wrap; max-height: 300px; overflow-y: auto;">@ViewBag.Result</pre>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Sayfa yüklendiğinde cari listesini yükle
+        document.addEventListener("DOMContentLoaded", () => {
+            loadCariler();
+        });
+
+        // Cari listesini yükle
+        async function loadCariler() {
+            const tbody = document.querySelector("#cariTable tbody");
+            tbody.innerHTML = "<tr><td colspan='5' class='text-center py-3'><span class='spinner-border spinner-border-sm'></span> Yükleniyor...</td></tr>";
+
+            try {
+                const res = await fetch("/TestApi/ListCariler");
+                const data = await res.json();
+
+                if (Array.isArray(data)) {
+                    tbody.innerHTML = "";
+                    
+                    if (data.length === 0) {
+                        tbody.innerHTML = "<tr><td colspan='5' class='text-center py-3 text-muted'>Kayıt bulunamadı</td></tr>";
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        const temel = item.CariTemelBilgi || {};
+                        const kod = temel.CARI_KOD ?? "";
+                        const isim = temel.CARI_ISIM ?? "";
+                        const tel = temel.CARI_TEL ?? "-";
+                        const il = temel.CARI_IL ?? "-";
+
+                        tbody.innerHTML += `
+                            <tr>
+                                <td><code>${kod}</code></td>
+                                <td>${isim}</td>
+                                <td>${tel}</td>
+                                <td>${il}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary selectCari"
+                                        data-kod="${kod}"
+                                        data-isim="${isim}"
+                                        data-tel="${tel}"
+                                        data-il="${il}"
+                                        title="Formlara Doldur">
+                                        <i class="bi bi-check2-square"></i>
+                                    </button>
+                                </td>
+                            </tr>`;
+                    });
+                } else {
+                    tbody.innerHTML = "<tr><td colspan='5' class='text-center text-danger py-3'>Beklenmeyen veri formatı</td></tr>";
+                }
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan='5' class='text-center text-danger py-3'>Hata: ${e.message}</td></tr>`;
+            }
+        }
+
+        // Satır seçildiğinde form alanlarını doldur
+        document.addEventListener("click", e => {
+            if (e.target.classList.contains("selectCari") || e.target.parentElement.classList.contains("selectCari")) {
+                const btn = e.target.classList.contains("selectCari") ? e.target : e.target.parentElement;
+                
+                // Update form
+                document.querySelector("#updateKod").value = btn.dataset.kod;
+                document.querySelector("#updateIsim").value = btn.dataset.isim;
+                document.querySelector("#updateTel").value = btn.dataset.tel === "-" ? "" : btn.dataset.tel;
+                document.querySelector("#updateIl").value = btn.dataset.il === "-" ? "" : btn.dataset.il;
+                document.querySelector("#updateMail").value = "";
+                
+                // Delete form
+                document.querySelector("#deleteKod").value = btn.dataset.kod;
+                
+                // Görsel feedback
+                btn.classList.remove("btn-outline-primary");
+                btn.classList.add("btn-success");
+                setTimeout(() => {
+                    btn.classList.remove("btn-success");
+                    btn.classList.add("btn-outline-primary");
+                }, 1000);
+            }
+        });
+    </script>
+}

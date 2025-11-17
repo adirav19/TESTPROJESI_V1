@@ -1,0 +1,82 @@
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-3">Hoş Geldiniz</h2>
+            <p class="text-muted">NetOpenX API Entegrasyon Sistemi</p>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row g-3 mb-4">
+        @{
+            var stats = new[]
+            {
+                new { Title = "Toplam Cari", Count = "1,234", Icon = "bi-people", Color = "primary" },
+                new { Title = "Toplam Stok", Count = "5,678", Icon = "bi-box", Color = "success" },
+                new { Title = "Açık Fatura", Count = "89", Icon = "bi-receipt", Color = "warning" },
+                new { Title = "Günlük İşlem", Count = "156", Icon = "bi-graph-up", Color = "info" }
+            };
+
+            foreach (var stat in stats)
+            {
+                <div class="col-md-3 col-sm-6">
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-@stat.Color bg-opacity-10 rounded p-3">
+                                        <i class="bi @stat.Icon text-@stat.Color fs-4"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-0 text-muted">@stat.Title</h6>
+                                    <h3 class="mb-0">@stat.Count</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Hızlı İşlemler</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        @{
+                            var actions = new[]
+                            {
+                                new { Text = "Yeni Cari", Icon = "bi-person-plus", Controller = "TestApi", Color = "primary" },
+                                new { Text = "Yeni Stok", Icon = "bi-plus-square", Controller = "Stok", Color = "success" },
+                                new { Text = "Yeni Fatura", Icon = "bi-file-earmark-plus", Controller = "Fatura", Color = "warning" },
+                                new { Text = "Raporlar", Icon = "bi-file-text", Controller = "Rapor", Color = "info" }
+                            };
+
+                            foreach (var action in actions)
+                            {
+                                <div class="col-md-3 col-sm-6">
+                                    <a asp-controller="@action.Controller" asp-action="Index" 
+                                       class="btn btn-outline-@action.Color w-100 py-3">
+                                        <i class="bi @action.Icon fs-4 d-block mb-2"></i>
+                                        @action.Text
+                                    </a>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
