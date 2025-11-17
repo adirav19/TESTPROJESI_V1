@@ -1,0 +1,496 @@
+@{
+    ViewData["Title"] = "Üretim Akış Kaydı (UAK) Yönetimi";
+}
+
+<div class="container-fluid px-4">
+    <h2 class="mb-4">🏭 Üretim Akış Kaydı (UAK) Yönetimi</h2>
+
+    <div class="row g-4">
+        <!-- ✅ Yeni UAK Kaydı -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-success text-white">
+                    <i class="bi bi-plus-circle-fill"></i> Yeni Üretim Akış Kaydı Oluştur
+                </div>
+                <div class="card-body">
+                    <form id="createUakForm" asp-controller="Uak" asp-action="CreateUak" method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">İş Emri No *</label>
+                                <input name="isEmriNo" class="form-control form-control-sm" placeholder="000000000000001" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Conf Sıra No *</label>
+                                <input name="confSiraNo" class="form-control form-control-sm" placeholder="00000001" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Stok Kodu *</label>
+                                <input name="stokKodu" class="form-control form-control-sm" placeholder="STOK001" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Operasyon Kodu *</label>
+                                <input name="opKodu" class="form-control form-control-sm" placeholder="OP.001" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Op Sıra No *</label>
+                                <input name="opSiraNo" class="form-control form-control-sm" placeholder="0001" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">İstasyon Kodu *</label>
+                                <input name="istasyonKodu" class="form-control form-control-sm" placeholder="IST001" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Başlangıç Tarihi *</label>
+                                <input name="baslangicTarih" type="datetime-local" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Başlangıç Vardiyası *</label>
+                                <select name="baslangicVardiya" class="form-select form-select-sm" required>
+                                    <option value="1">Vardiya 1</option>
+                                    <option value="2">Vardiya 2</option>
+                                    <option value="3">Vardiya 3</option>
+                                    <option value="4">Vardiya 4</option>
+                                    <option value="5">Vardiya 5</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Süre (dakika) *</label>
+                                <input name="sure" type="number" step="0.01" class="form-control form-control-sm" placeholder="60.0" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Süre Tipi *</label>
+                                <select name="sureTipi" class="form-select form-select-sm" required>
+                                    <option value="0">Standart</option>
+                                    <option value="1">Hazırlık</option>
+                                    <option value="2">Operasyon</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Bitiş Tarih Saat *</label>
+                                <input name="bitisTarihSaat" type="datetime-local" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Aktivite Kodu *</label>
+                                <input name="aktiviteKodu" class="form-control form-control-sm" placeholder="01" value="01" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Üretilen Miktar *</label>
+                                <input name="uretilenmiktar" type="number" step="0.01" class="form-control form-control-sm" placeholder="0.0" value="0" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Fire Miktarı</label>
+                                <input name="fireMiktar" type="number" step="0.01" class="form-control form-control-sm" placeholder="0.0" value="0" />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Revizyon No</label>
+                                <input name="revNo" class="form-control form-control-sm" placeholder="00000000" value="00000000" />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">USK Depo Kodu *</label>
+                                <input name="uskDepoKodu" type="number" class="form-control form-control-sm" placeholder="10" value="10" required />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 mt-3">
+                            <i class="bi bi-plus-circle"></i> Kayıt Oluştur
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✏️ Güncelle -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-warning text-dark">
+                    <i class="bi bi-pencil-square"></i> UAK Kaydı Güncelle
+                </div>
+                <div class="card-body">
+                    <form id="updateUakForm" asp-controller="Uak" asp-action="UpdateUak" method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Inc Key No *</label>
+                                <input id="updateIncKeyNo" name="incKeyNo" type="number" class="form-control form-control-sm" placeholder="Kayıt ID" required readonly />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">İş Emri No *</label>
+                                <input id="updateIsEmriNo" name="isEmriNo" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Conf Sıra No *</label>
+                                <input id="updateConfSiraNo" name="confSiraNo" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Stok Kodu *</label>
+                                <input id="updateStokKodu" name="stokKodu" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Operasyon Kodu *</label>
+                                <input id="updateOpKodu" name="opKodu" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Op Sıra No *</label>
+                                <input id="updateOpSiraNo" name="opSiraNo" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">İstasyon Kodu *</label>
+                                <input id="updateIstasyonKodu" name="istasyonKodu" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Başlangıç Tarihi *</label>
+                                <input id="updateBaslangicTarih" name="baslangicTarih" type="datetime-local" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Başlangıç Vardiyası *</label>
+                                <select id="updateBaslangicVardiya" name="baslangicVardiya" class="form-select form-select-sm" required>
+                                    <option value="1">Vardiya 1</option>
+                                    <option value="2">Vardiya 2</option>
+                                    <option value="3">Vardiya 3</option>
+                                    <option value="4">Vardiya 4</option>
+                                    <option value="5">Vardiya 5</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Süre (dakika) *</label>
+                                <input id="updateSure" name="sure" type="number" step="0.01" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Süre Tipi *</label>
+                                <select id="updateSureTipi" name="sureTipi" class="form-select form-select-sm" required>
+                                    <option value="0">Standart</option>
+                                    <option value="1">Hazırlık</option>
+                                    <option value="2">Operasyon</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Bitiş Tarih Saat *</label>
+                                <input id="updateBitisTarihSaat" name="bitisTarihSaat" type="datetime-local" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Aktivite Kodu *</label>
+                                <input id="updateAktiviteKodu" name="aktiviteKodu" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Üretilen Miktar *</label>
+                                <input id="updateUretilenmiktar" name="uretilenmiktar" type="number" step="0.01" class="form-control form-control-sm" required />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Fire Miktarı</label>
+                                <input id="updateFireMiktar" name="fireMiktar" type="number" step="0.01" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">Revizyon No</label>
+                                <input id="updateRevNo" name="revNo" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small">USK Depo Kodu *</label>
+                                <input id="updateUskDepoKodu" name="uskDepoKodu" type="number" class="form-control form-control-sm" required />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100 mt-3">
+                            <i class="bi bi-arrow-clockwise"></i> Güncelle
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🗑️ Sil -->
+    <div class="row g-4 mt-2">
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <i class="bi bi-trash3-fill"></i> UAK Kaydı Sil
+                </div>
+                <div class="card-body">
+                    <form id="deleteUakForm" asp-controller="Uak" asp-action="DeleteUak" method="post">
+                        <div class="mb-3">
+                            <label class="form-label small">Inc Key No</label>
+                            <input id="deleteIncKeyNo" name="incKeyNo" type="number" class="form-control" placeholder="Kayıt ID" required />
+                        </div>
+                        <div class="alert alert-warning small">
+                            <i class="bi bi-exclamation-triangle"></i> 
+                            Bu işlem geri alınamaz!
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Silmek istediğinizden emin misiniz?')">
+                            <i class="bi bi-trash"></i> Sil
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔍 İş Emri No İle Sorgulama -->
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <i class="bi bi-search"></i> İş Emri Sorgula
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label small">İş Emri No</label>
+                        <input id="searchIsEmriNo" class="form-control" placeholder="000000000000001" />
+                    </div>
+                    <button type="button" class="btn btn-info w-100" onclick="searchByIsEmriNo()">
+                        <i class="bi bi-search"></i> Sorgula
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📋 UAK Listesi -->
+    <div class="card mt-4 border-0 shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-list-ul"></i> Üretim Akış Kayıtları</span>
+            <button class="btn btn-sm btn-light" onclick="loadUaklar()">
+                <i class="bi bi-arrow-clockwise"></i> Yenile
+            </button>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-sm mb-0" id="uakTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="80">IncKeyNo</th>
+                            <th>İş Emri No</th>
+                            <th>Stok Kodu</th>
+                            <th>Op Kodu</th>
+                            <th>İstasyon</th>
+                            <th>Başlangıç</th>
+                            <th>Süre</th>
+                            <th>Üretilen</th>
+                            <th>Fire</th>
+                            <th>İşlendi</th>
+                            <th width="100">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="11" class="text-center py-3">Yükleniyor...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔔 Durum -->
+    @if (ViewBag.Hata != null)
+    {
+        <div class="alert alert-danger mt-3 shadow-sm">
+            <i class="bi bi-x-circle"></i> <b>Hata:</b> @ViewBag.Hata
+        </div>
+    }
+    else if (ViewBag.Result != null)
+    {
+        <div class="alert alert-success mt-3 shadow-sm">
+            <i class="bi bi-check-circle"></i> <b>Başarılı:</b>
+            <pre class="bg-light p-3 rounded mt-2 small" style="white-space: pre-wrap; max-height: 300px; overflow-y: auto;">@ViewBag.Result</pre>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Sayfa yüklendiğinde UAK listesini yükle
+        document.addEventListener("DOMContentLoaded", () => {
+            loadUaklar();
+        });
+
+        // UAK listesini yükle
+        async function loadUaklar() {
+            const tbody = document.querySelector("#uakTable tbody");
+            tbody.innerHTML = "<tr><td colspan='11' class='text-center py-3'><span class='spinner-border spinner-border-sm'></span> Yükleniyor...</td></tr>";
+
+            try {
+                const res = await fetch("/Uak/ListUaklar");
+                const response = await res.json();
+
+                // Response wrapper'ı kontrol et
+                const data = response.Data || response;
+
+                if (Array.isArray(data)) {
+                    tbody.innerHTML = "";
+                    
+                    if (data.length === 0) {
+                        tbody.innerHTML = "<tr><td colspan='11' class='text-center py-3 text-muted'>Kayıt bulunamadı</td></tr>";
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        const incKeyNo = item.IncKeyNo || "";
+                        const isEmriNo = item.IsEmriNo || "";
+                        const stokKodu = item.StokKodu || "";
+                        const opKodu = item.OpKodu || "";
+                        const istasyonKodu = item.IstasyonKodu || "";
+                        const baslangicTarih = item.BASLANGICTARIH ? formatDateTime(item.BASLANGICTARIH) : "-";
+                        const sure = item.SURE || 0;
+                        const uretilenmiktar = item.URETILENMIKTAR || 0;
+                        const fireMiktar = item.FIREMIKTAR || 0;
+                        const islendi = item.ISLENDI;
+                        const islendiText = islendi ? '<span class="badge bg-success">Evet</span>' : '<span class="badge bg-secondary">Hayır</span>';
+
+                        tbody.innerHTML += `
+                            <tr>
+                                <td><code>${incKeyNo}</code></td>
+                                <td>${isEmriNo}</td>
+                                <td>${stokKodu}</td>
+                                <td>${opKodu}</td>
+                                <td>${istasyonKodu}</td>
+                                <td><small>${baslangicTarih}</small></td>
+                                <td>${sure} dk</td>
+                                <td>${uretilenmiktar}</td>
+                                <td>${fireMiktar}</td>
+                                <td>${islendiText}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary selectUak"
+                                        data-item='${JSON.stringify(item)}'
+                                        title="Formlara Doldur">
+                                        <i class="bi bi-check2-square"></i>
+                                    </button>
+                                </td>
+                            </tr>`;
+                    });
+                } else {
+                    tbody.innerHTML = "<tr><td colspan='11' class='text-center text-danger py-3'>Beklenmeyen veri formatı</td></tr>";
+                }
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan='11' class='text-center text-danger py-3'>Hata: ${e.message}</td></tr>`;
+            }
+        }
+
+        // İş Emri No ile sorgulama
+        async function searchByIsEmriNo() {
+            const isEmriNo = document.getElementById('searchIsEmriNo').value.trim();
+            if (!isEmriNo) {
+                alert('Lütfen İş Emri No giriniz');
+                return;
+            }
+
+            const tbody = document.querySelector("#uakTable tbody");
+            tbody.innerHTML = "<tr><td colspan='11' class='text-center py-3'><span class='spinner-border spinner-border-sm'></span> Sorgulanıyor...</td></tr>";
+
+            try {
+                const res = await fetch(`/Uak/GetByIsEmriNo?isEmriNo=${encodeURIComponent(isEmriNo)}`);
+                const response = await res.json();
+                const data = response.Data || response;
+
+                if (Array.isArray(data) && data.length > 0) {
+                    // Listeyi güncelle
+                    tbody.innerHTML = "";
+                    data.forEach(item => {
+                        const incKeyNo = item.IncKeyNo || "";
+                        const isEmriNoVal = item.IsEmriNo || "";
+                        const stokKodu = item.StokKodu || "";
+                        const opKodu = item.OpKodu || "";
+                        const istasyonKodu = item.IstasyonKodu || "";
+                        const baslangicTarih = item.BASLANGICTARIH ? formatDateTime(item.BASLANGICTARIH) : "-";
+                        const sure = item.SURE || 0;
+                        const uretilenmiktar = item.URETILENMIKTAR || 0;
+                        const fireMiktar = item.FIREMIKTAR || 0;
+                        const islendi = item.ISLENDI;
+                        const islendiText = islendi ? '<span class="badge bg-success">Evet</span>' : '<span class="badge bg-secondary">Hayır</span>';
+
+                        tbody.innerHTML += `
+                            <tr class="table-warning">
+                                <td><code>${incKeyNo}</code></td>
+                                <td>${isEmriNoVal}</td>
+                                <td>${stokKodu}</td>
+                                <td>${opKodu}</td>
+                                <td>${istasyonKodu}</td>
+                                <td><small>${baslangicTarih}</small></td>
+                                <td>${sure} dk</td>
+                                <td>${uretilenmiktar}</td>
+                                <td>${fireMiktar}</td>
+                                <td>${islendiText}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary selectUak"
+                                        data-item='${JSON.stringify(item)}'
+                                        title="Formlara Doldur">
+                                        <i class="bi bi-check2-square"></i>
+                                    </button>
+                                </td>
+                            </tr>`;
+                    });
+                } else {
+                    tbody.innerHTML = "<tr><td colspan='11' class='text-center text-warning py-3'>Bu iş emri için kayıt bulunamadı</td></tr>";
+                }
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan='11' class='text-center text-danger py-3'>Hata: ${e.message}</td></tr>`;
+            }
+        }
+
+        // Tarih formatla
+        function formatDateTime(dateString) {
+            if (!dateString) return "-";
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleString('tr-TR', { 
+                    year: 'numeric', 
+                    month: '2-digit', 
+                    day: '2-digit', 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+            } catch {
+                return dateString;
+            }
+        }
+
+        // Datetime-local input için format
+        function formatForInput(dateString) {
+            if (!dateString) return "";
+            try {
+                const date = new Date(dateString);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${year}-${month}-${day}T${hours}:${minutes}`;
+            } catch {
+                return "";
+            }
+        }
+
+        // Satır seçildiğinde form alanlarını doldur
+        document.addEventListener("click", e => {
+            const btn = e.target.closest('.selectUak');
+            if (btn) {
+                const item = JSON.parse(btn.dataset.item);
+                
+                // Update form
+                document.querySelector("#updateIncKeyNo").value = item.IncKeyNo || "";
+                document.querySelector("#updateIsEmriNo").value = item.IsEmriNo || "";
+                document.querySelector("#updateConfSiraNo").value = item.CONFSIRANO || "";
+                document.querySelector("#updateStokKodu").value = item.StokKodu || "";
+                document.querySelector("#updateOpKodu").value = item.OpKodu || "";
+                document.querySelector("#updateOpSiraNo").value = item.OPSIRANO || "";
+                document.querySelector("#updateIstasyonKodu").value = item.IstasyonKodu || "";
+                document.querySelector("#updateBaslangicTarih").value = formatForInput(item.BASLANGICTARIH);
+                document.querySelector("#updateBaslangicVardiya").value = item.BASLANGICVARDIYA || 1;
+                document.querySelector("#updateSure").value = item.SURE || 0;
+                document.querySelector("#updateSureTipi").value = item.SURETIPI || 0;
+                document.querySelector("#updateBitisTarihSaat").value = formatForInput(item.BITISTARIHSAAT);
+                document.querySelector("#updateAktiviteKodu").value = item.AKTIVITEKODU || "";
+                document.querySelector("#updateUretilenmiktar").value = item.URETILENMIKTAR || 0;
+                document.querySelector("#updateFireMiktar").value = item.FIREMIKTAR || 0;
+                document.querySelector("#updateRevNo").value = item.RevNo || "";
+                document.querySelector("#updateUskDepoKodu").value = item.USKDEPOKODU || 10;
+                
+                // Delete form
+                document.querySelector("#deleteIncKeyNo").value = item.IncKeyNo || "";
+                
+                // Görsel feedback
+                btn.classList.remove("btn-outline-primary");
+                btn.classList.add("btn-success");
+                setTimeout(() => {
+                    btn.classList.remove("btn-success");
+                    btn.classList.add("btn-outline-primary");
+                }, 1000);
+
+                // Scroll to update form
+                document.querySelector("#updateUakForm").scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    </script>
+}
