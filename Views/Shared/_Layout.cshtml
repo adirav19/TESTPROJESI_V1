@@ -153,17 +153,19 @@
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-menu">
             @{
+                // Mevcut menuItems array'ine EKLE (Satır ~70 civarı)
                 var menuItems = new[]
                 {
-                    new { Controller = "Home", Action = "Index", Icon = "bi-house", Text = "Ana Sayfa" },
-                    new { Controller = "TestApi", Action = "Index", Icon = "bi-people", Text = "Cari Yönetimi" },
-                    new { Controller = "Stok", Action = "Index", Icon = "bi-box", Text = "Stoklar" },
-                    new { Controller = "Uak", Action = "Index", Icon = "bi-gear-wide-connected", Text = "Üretim Akışı (UAK)" },
-                    new { Controller = "Fatura", Action = "Index", Icon = "bi-receipt", Text = "Faturalar" },
-                    new { Controller = "Rapor", Action = "Index", Icon = "bi-graph-up", Text = "Raporlar" },
-                    new { Controller = "Auth", Action = "Index", Icon = "bi-key", Text = "Token Yönetimi" },
-                    new { Controller = "Ayar", Action = "Index", Icon = "bi-gear", Text = "Ayarlar" }
-                };
+                        new { Controller = "Home", Action = "Index", Icon = "bi-house", Text = "Ana Sayfa" },
+                        new { Controller = "TestApi", Action = "Index", Icon = "bi-people", Text = "Cari Yönetimi" },
+                        new { Controller = "Stok", Action = "Index", Icon = "bi-box", Text = "Stoklar" },
+                        new { Controller = "Uak", Action = "Index", Icon = "bi-gear-wide-connected", Text = "Üretim Akışı (UAK)" },
+                        new { Controller = "FreeProduction", Action = "Index", Icon = "bi-box-seam", Text = "Serbest Üretim Fişi" }, // 👈 BU SATIRI EKLE
+                        new { Controller = "Fatura", Action = "Index", Icon = "bi-receipt", Text = "Faturalar" },
+                        new { Controller = "Rapor", Action = "Index", Icon = "bi-graph-up", Text = "Raporlar" },
+                        new { Controller = "Auth", Action = "Index", Icon = "bi-key", Text = "Token Yönetimi" },
+                        new { Controller = "Ayar", Action = "Index", Icon = "bi-gear", Text = "Ayarlar" }
+                        };
 
                 var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
                 var currentAction = ViewContext.RouteData.Values["action"]?.ToString();

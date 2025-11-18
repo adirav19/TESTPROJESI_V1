@@ -1,0 +1,417 @@
+﻿@{
+    ViewData["Title"] = "Serbest Üretim Sonu Kaydı";
+}
+
+<style>
+    .netsis-form {
+        background: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-family: Tahoma, Arial, sans-serif;
+        font-size: 11px;
+    }
+
+    .netsis-toolbar {
+        background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+        border: 1px solid #999;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+
+        .netsis-toolbar button {
+            background: linear-gradient(to bottom, #fff, #e0e0e0);
+            border: 1px solid #999;
+            padding: 4px 8px;
+            margin-right: 3px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+            .netsis-toolbar button:hover {
+                background: linear-gradient(to bottom, #fff, #d0d0d0);
+            }
+
+    .netsis-group {
+        background: white;
+        border: 1px solid #999;
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+
+    .netsis-group-title {
+        background: #e0e0e0;
+        padding: 3px 8px;
+        border: 1px solid #999;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .netsis-field {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+        .netsis-field label {
+            width: 120px;
+            font-size: 11px;
+            margin: 0;
+        }
+
+        .netsis-field input,
+        .netsis-field select {
+            flex: 1;
+            border: 1px solid #999;
+            padding: 2px 4px;
+            font-size: 11px;
+            height: 21px;
+        }
+
+        .netsis-field .btn-icon {
+            width: 21px;
+            height: 21px;
+            padding: 0;
+            margin-left: 2px;
+            background: #f0f0f0;
+            border: 1px solid #999;
+        }
+
+    .netsis-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 11px;
+        background: white;
+    }
+
+        .netsis-table th {
+            background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+            border: 1px solid #999;
+            padding: 4px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .netsis-table td {
+            border: 1px solid #ccc;
+            padding: 3px 4px;
+        }
+
+    .netsis-tabs {
+        margin-bottom: 10px;
+    }
+
+    .netsis-tab {
+        display: inline-block;
+        padding: 4px 12px;
+        background: #e0e0e0;
+        border: 1px solid #999;
+        border-bottom: none;
+        cursor: pointer;
+        margin-right: 2px;
+    }
+
+        .netsis-tab.active {
+            background: white;
+            font-weight: bold;
+        }
+</style>
+
+<div class="netsis-form">
+    <!-- Toolbar -->
+    <div class="netsis-toolbar">
+        <button onclick="yeniFis()">🆕 Yeni</button>
+        <button onclick="kaydet()">💾 Kaydet</button>
+        <button onclick="sil()">🗑️ Sil</button>
+        <button onclick="yenile()">🔄 Yenile</button>
+        <button onclick="isEmrindenGetir()">📋 İş Emrinden Getir</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="netsis-tabs">
+        <div class="netsis-tab active">Üst Bilgi Girişi</div>
+        <div class="netsis-tab">Sabit Bilgiler</div>
+    </div>
+
+    <!-- Üst Form -->
+    <div class="netsis-group">
+        <div class="row g-2">
+            <div class="col-md-6">
+                <div class="netsis-field">
+                    <label>Fiş No.</label>
+                    <input type="text" id="fisNo" />
+                    <button class="btn-icon">📁</button>
+                </div>
+                <div class="netsis-field">
+                    <label>Mamul Kodu</label>
+                    <input type="text" id="mamulKodu" />
+                    <button class="btn-icon">🔍</button>
+                    <input type="text" id="mamulAdi" readonly style="flex: 2; margin-left: 5px;" />
+                </div>
+                <div class="netsis-field">
+                    <label>Miktar</label>
+                    <input type="number" id="miktar" step="0.000001" style="width: 100px;" value="300" />
+                    <label style="width: 80px; margin-left: 10px;">2.Miktar</label>
+                    <input type="number" step="0.000001" style="width: 100px;" value="0" />
+                    <label style="width: 80px; margin-left: 10px;">Öncelik Açıklama</label>
+                    <input type="text" style="flex: 2;" />
+                </div>
+                <div class="netsis-field">
+                    <label>Revizyon No.</label>
+                    <input type="text" style="width: 100px;" />
+                    <button class="btn-icon">🔍</button>
+                    <label style="width: 80px; margin-left: 10px;">Proje Kodu</label>
+                    <input type="text" style="flex: 1;" />
+                    <button class="btn-icon">🔍</button>
+                    <label style="width: 80px; margin-left: 10px;">Ek Alan</label>
+                    <input type="text" style="flex: 1;" />
+                    <button class="btn-icon">🔍</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="netsis-field">
+                    <label>Tarih</label>
+                    <input type="date" id="tarih" style="width: 150px;" />
+                    <button class="btn-icon">📅</button>
+                    <label style="width: 100px; margin-left: 10px;">İş Emri/Sip. No.</label>
+                    <input type="text" id="isEmriNo" />
+                    <button class="btn-icon">🔍</button>
+                </div>
+                <div class="netsis-field">
+                    <label>Depo Önceliği</label>
+                    <select style="width: 150px;">
+                        <option>Hiçbiri</option>
+                    </select>
+                    <label style="width: 100px; margin-left: 10px;">L. Depo</label>
+                    <input type="number" id="lDepo" value="10" style="width: 60px;" />
+                    <button class="btn-icon">🔍</button>
+                    <input type="text" value="HAMMADDE DEPO" readonly style="flex: 1; margin-left: 5px;" />
+                    <label style="width: 80px; margin-left: 10px;">Çık. Depo</label>
+                    <input type="number" id="cikDepo" value="20" style="width: 60px;" />
+                    <button class="btn-icon">🔍</button>
+                    <input type="text" value="ÜRETIM DEPO" readonly style="flex: 1; margin-left: 5px;" />
+                </div>
+                <div class="netsis-field">
+                    <div style="display: flex; align-items: center;">
+                        <input type="checkbox" id="bakiye" />
+                        <label for="bakiye" style="width: auto; margin-left: 5px;">Bakiye</label>
+                        <input type="radio" name="depo" value="verilen" style="margin-left: 20px;" checked />
+                        <label style="width: auto; margin-left: 5px;">Verilen Depo</label>
+                        <input type="radio" name="depo" value="tum" style="margin-left: 10px;" />
+                        <label style="width: auto; margin-left: 5px;">Tüm Depolar</label>
+                    </div>
+                </div>
+                <div class="netsis-field">
+                    <input type="checkbox" id="otoYariMamul" />
+                    <label for="otoYariMamul" style="width: auto; margin-left: 5px;">Oto. Yarı Mamullerde Girdi/Çıktı</label>
+                    <input type="checkbox" id="otoStoktan" style="margin-left: 20px;" />
+                    <label for="otoStoktan" style="width: auto; margin-left: 5px;">Oto. Yarı Mamullerde Stoktan Kullan</label>
+                </div>
+                <div class="netsis-field">
+                    <label>Mamüller Ölçü Birimi</label>
+                    <input type="radio" name="olcu" value="1" checked />
+                    <label style="width: 20px; margin-left: 5px;">AD</label>
+                    <input type="radio" name="olcu" value="2" style="margin-left: 10px;" />
+                    <label style="width: 20px; margin-left: 5px;">2</label>
+                    <input type="radio" name="olcu" value="3" style="margin-left: 10px;" />
+                    <label style="width: 20px; margin-left: 5px;">3</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alt Form - Stok Kodları -->
+    <div class="netsis-group">
+        <div class="netsis-field">
+            <label>Stok Kodu</label>
+            <input type="text" id="stokKodu" style="width: 150px;" />
+            <button class="btn-icon">🔍</button>
+            <div style="margin-left: 20px; display: flex; align-items: center;">
+                <input type="radio" name="giris" value="giris" checked />
+                <label style="width: auto; margin-left: 5px;">Giriş</label>
+                <input type="radio" name="giris" value="cikis" style="margin-left: 10px;" />
+                <label style="width: auto; margin-left: 5px;">Çıkış</label>
+                <label style="width: 60px; margin-left: 20px;">L. Depo</label>
+                <input type="number" value="20" style="width: 60px;" />
+                <button class="btn-icon">🔍</button>
+                <label style="width: 60px; margin-left: 10px;">Ölçü Br.</label>
+                <input type="text" value="AD" readonly style="width: 60px;" />
+                <label style="width: 60px; margin-left: 10px;">Miktar</label>
+                <input type="number" step="0.000001" value="0.000000" style="width: 100px;" />
+                <label style="width: 60px; margin-left: 10px;">2.Miktar</label>
+                <input type="number" step="0.000001" value="0.000000" style="width: 100px;" />
+            </div>
+        </div>
+        <div class="netsis-field">
+            <label>Ek Alan-1</label>
+            <input type="text" style="width: 150px;" />
+            <button class="btn-icon">🔍</button>
+            <label style="width: 80px; margin-left: 10px;">Ek Alan-2</label>
+            <input type="text" style="flex: 1;" />
+            <label style="width: 80px; margin-left: 10px;">Açıklama</label>
+            <input type="text" id="aciklama" value="YM10" style="flex: 2;" />
+            <button class="btn-icon">📋</button>
+        </div>
+
+        <!-- Grid -->
+        <table class="netsis-table mt-2" id="kalemTable">
+            <thead>
+                <tr>
+                    <th style="width: 30px;">✓</th>
+                    <th>Stok Kodu</th>
+                    <th>Stok İsmi</th>
+                    <th>Ölçü Br.</th>
+                    <th>G/C</th>
+                    <th>Miktar</th>
+                    <th>2.Miktar</th>
+                    <th>Ek Alan-1</th>
+                    <th>Ek Alan-2</th>
+                    <th>Açıklama</th>
+                    <th>Seri Durumu</th>
+                    <th>Bakiye Durumu</th>
+                    <th>Maliyet</th>
+                    <th>Depo Kodu</th>
+                    <th>Br.Maliyet</th>
+                    <th>Top.Maliyet</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" /></td>
+                    <td>YM11</td>
+                    <td>YARIMAMÜL11</td>
+                    <td>AD</td>
+                    <td>C</td>
+                    <td>300.000000</td>
+                    <td>0.000000</td>
+                    <td></td>
+                    <td></td>
+                    <td>YM10</td>
+                    <td>Seri Takibi Yok</td>
+                    <td>Eksi Bakiyeli Mal(-300)</td>
+                    <td>0,00000</td>
+                    <td>20</td>
+                    <td>0.00000</td>
+                    <td>0.00000</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" /></td>
+                    <td>YM10</td>
+                    <td>YARIMAMÜL10</td>
+                    <td>AD</td>
+                    <td>G</td>
+                    <td>300.000000</td>
+                    <td>0.000000</td>
+                    <td></td>
+                    <td></td>
+                    <td>Üretim</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Alt Toolbar -->
+    <div style="text-align: right; margin-top: 10px;">
+        <button onclick="fisUret()" style="padding: 5px 15px;">Fiş Üret</button>
+        <button onclick="fisIptal()" style="padding: 5px 15px; margin-left: 5px;">Fiş İptal</button>
+        <button onclick="yeniFis()" style="padding: 5px 15px; margin-left: 5px;">Yeni Fiş</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function getToken() {
+            const res = await fetch('/FreeProduction/GetAll');
+            return res.ok;
+        }
+
+        async function kaydet() {
+            const dto = {
+                FisNo: document.getElementById('fisNo').value,
+                Tarih: document.getElementById('tarih').value,
+                Depo: parseInt(document.getElementById('lDepo').value),
+                Mamul: document.getElementById('mamulKodu').value,
+                Miktar: parseFloat(document.getElementById('miktar').value)
+            };
+
+            try {
+                const res = await fetch('/FreeProduction/CreateFree', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dto)
+                });
+                const result = await res.json();
+                alert(result.message);
+            } catch (err) {
+                alert('Hata: ' + err.message);
+            }
+        }
+
+        async function isEmrindenGetir() {
+            const isEmri = prompt('İş Emri No:');
+            if (!isEmri) return;
+
+            try {
+                const res = await fetch(`/FreeProduction/FromWorkOrder/${isEmri}`);
+                const json = await res.json();
+                const data = json.Data || json.data;
+
+                if (data) {
+                    document.getElementById('fisNo').value = data.UretSon_FisNo || '';
+                    document.getElementById('mamulKodu').value = data.UretSon_Mamul || '';
+                    document.getElementById('miktar').value = data.UretSon_Miktar || 0;
+                    alert('✅ İş emrinden getirildi!');
+                } else {
+                    alert('⚠️ İş emri bulunamadı');
+                }
+            } catch (err) {
+                alert('Hata: ' + err.message);
+            }
+        }
+
+        function yeniFis() {
+            document.getElementById('fisNo').value = '';
+            document.getElementById('mamulKodu').value = '';
+            document.getElementById('miktar').value = '300';
+            document.getElementById('tarih').value = new Date().toISOString().split('T')[0];
+        }
+
+        function fisUret() {
+            kaydet();
+        }
+
+        function fisIptal() {
+            if (confirm('Fiş iptal edilsin mi?')) {
+                yeniFis();
+            }
+        }
+
+        function sil() {
+            const fisNo = document.getElementById('fisNo').value;
+            if (!fisNo) {
+                alert('Fiş numarası giriniz');
+                return;
+            }
+            if (!confirm(`${fisNo} numaralı fiş silinsin mi?`)) return;
+
+            fetch(`/FreeProduction/${fisNo}`, { method: 'DELETE' })
+                .then(res => res.json())
+                .then(result => alert(result.message))
+                .catch(err => alert('Hata: ' + err.message));
+        }
+
+        function yenile() {
+            location.reload();
+        }
+
+        // Sayfa yüklendiğinde bugünün tarihini ata
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('tarih').value = new Date().toISOString().split('T')[0];
+        });
+    </script>
+}
